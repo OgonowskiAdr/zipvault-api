@@ -1,9 +1,11 @@
 from flask import Flask, request, send_file
+from flask_cors import CORS
 import pyminizip
 import uuid
 import os
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/api/create-zip', methods=['POST'])
 def create_zip():
