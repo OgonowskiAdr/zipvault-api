@@ -1,9 +1,8 @@
 from flask import Flask, request, send_file
 from flask_cors import CORS
-import zipfile
+import pyminizip
 import uuid
 import os
-import io
 
 app = Flask(__name__)
 CORS(app)
@@ -23,12 +22,12 @@ def create_zip():
     # Zapisz plik tymczasowo
     uploaded_file.save(input_path)
 
-    # Spakuj plik z hasłem i oryginalną nazwą
-    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-        zipf.setpassword(password.encode())
-        zipf.write(input_path, arcname=uploaded_file.filename)
+    # Spakuj z hasłem
+    pyminizip.compress(input_path, None, zip_path, password, 5)
 
+    # Usuń oryginalny plik
     os.remove(input_path)
+
     return send_file(zip_path, as_attachment=True)
 
 @app.route('/api/health', methods=['GET'])
