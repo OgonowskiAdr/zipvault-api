@@ -1,3 +1,4 @@
 Flask
 pyminizip
+flask-cors
 gunicorn
